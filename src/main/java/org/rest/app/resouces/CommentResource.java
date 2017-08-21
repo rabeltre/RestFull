@@ -1,0 +1,58 @@
+package org.rest.app.resouces;
+
+import org.rest.app.model.Comment;
+import org.rest.app.service.CommentService;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+
+@Path("/")
+@Produces(MediaType.APPLICATION_XML)
+@Consumes(MediaType.APPLICATION_JSON)
+public class CommentResource {
+
+
+    private CommentService commentService = new CommentService();
+
+    @GET
+    public List<Comment> getAllComments(@PathParam("messageId") long messageId) {
+        return commentService.getAllComments(messageId);
+    }
+    @POST
+    public Comment addComment(@PathParam("messageId") long messageId, Comment comment) {
+        return commentService.addComment(messageId, comment);
+    }
+
+    @PUT
+    @Path("/{commentId}")
+    public Comment updateComment(@PathParam("messageId") long messageId, @PathParam("commentId") long id, Comment comment) {
+        comment.setId(id);
+        return commentService.updateComment(messageId, comment);
+    }
+
+    @DELETE
+    @Path("/{commentId}")
+    public void deleteComment(@PathParam("messageId") long messageId, @PathParam("commentId") long commentId) {
+        commentService.removeComment(messageId, commentId);
+    }
+
+
+    @GET
+    @Path("/{commentId}")
+    public Comment getMessage(@PathParam("messageId") long messageId, @PathParam("commentId") long commentId) {
+        return commentService.getComment(messageId, commentId);
+    }
+//    @GET
+//    public String prueba (@PathParam("messageId")long messageId)
+//    {
+//        return "nuevo comentario con el mensaje id: " + messageId ;
+//    }
+//
+//    @GET
+//    @Path("/{commentId}")
+//    public String test02 (@PathParam("commentId")long commentId, @PathParam("messageId") long messageId)
+//    {
+//        return "Method return comment id: " + commentId + " for message: " + messageId;
+//    }
+}
